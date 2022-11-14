@@ -1,6 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import LoadingComponent from './components/loading.component';
 import Navigation from './navigation/navigation';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
 
 export default function App() {
   // return (
@@ -10,7 +13,11 @@ export default function App() {
   //   </View>
   // );
 
-  return <Navigation />
+  return(
+    <Provider store={store}>
+       <Navigation />
+       {/* <LoadingComponent/> */}
+       </Provider>)
 
 }
 

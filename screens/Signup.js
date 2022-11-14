@@ -6,6 +6,7 @@ import loginlogo from "../assets/loginlogo.png";
 import google from "../assets/google.png";
 import facebookship from "../assets/facebookship.png";
 import linkedinship from "../assets/linkedinship.png";
+import { SelectList } from 'react-native-dropdown-select-list'
 
 import { TouchableOpacity } from 'react-native';
 
@@ -14,13 +15,37 @@ const Signup = ({navigation}) => {
 
     const [secure, setSecure] = useState(true);
 
+    const userType = ["Personal", "Business"]
+
     const changeIcon= () => {
         setSecure(!secure)
+    }
+    const handleSubmit=()=>{
+        console.warn(selected, source, signup)
     }
     
     const pressHandler = () =>{
         navigation.push("Login")
     }
+    const [selected, setSelected] = useState("");
+    const [source, setSource] = useState("");
+    const [signup, setSignup] = useState("");
+
+    const data = [
+        {key:'1', value:'Select op', disabled:true},
+        {key:'2', value:'Personal'},
+        {key:'3', value:'Business'},
+    ]
+    const data2 = [
+        {key:'1', value:'default', disabled:true},
+        {key:'2', value:'Personal'},
+        {key:'3', value:'Business'},
+    ]
+    const data3 = [
+        {key:'1', value:'default', disabled:true},
+        {key:'2', value:'Friends'},
+        {key:'3', value: 'Linkedin'},
+    ]
 
     return(
         <View style={styles.body}>
@@ -64,18 +89,49 @@ size={20} color='gray' onPress={changeIcon}/>
                     </View>
                 </View>
                 <View style={styles.inputemailtog}>
-                    <Text style={styles.emailtog}>State</Text>
+                    <Text style={styles.emailtog}>Email</Text>
                     <View style={styles.emailinputhold}>
                     <TextInput style={styles.emailinput}/>
                     </View>
                 </View>
                 <View style={styles.inputemailtog}>
-                    <Text style={styles.emailtog}>Country</Text>
+                    <Text style={styles.emailtog}>Phone number</Text>
                     <View style={styles.emailinputhold}>
                     <TextInput style={styles.emailinput}/>
                     </View>
                 </View>
                 <View style={styles.inputemailtog}>
+                    <Text style={styles.emailtog}>User Type</Text>
+                    <SelectList 
+                    setSelected={(value) => setSelected(value)} 
+                    data={data} 
+                    save="value"
+                    boxStyles={{backgroundColor: "#DCDCDC", border: "none"}}
+                    placeholder="Select Type"
+                        />
+                </View>
+                <View style={styles.inputemailtog}>
+                    <Text style={styles.emailtog}>Signup Method</Text>
+                    <SelectList 
+                    setSelected={(val) => setSignup(val)} 
+                    data={data2} 
+                    save="value"
+                    boxStyles={{backgroundColor: "#DCDCDC", border: "none"}}
+                    placeholder="Select Type"
+                        />
+                </View>
+                <View style={styles.inputemailtog}>
+                    <Text style={styles.emailtog}>Source of Awareness</Text>
+                    <SelectList 
+                    setSelected={(val) => setSource(val)} 
+                    data={data3} 
+                    save="value"
+                    boxStyles={{backgroundColor: "#DCDCDC", border: "none"}}
+                    placeholder="Select Type"
+                        />
+                </View>
+                
+                {/* <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>City</Text>
                     <View style={styles.emailinputhold}>
                     <TextInput style={styles.emailinput}/>
@@ -92,13 +148,13 @@ size={20} color='gray' onPress={changeIcon}/>
                     <View style={styles.emailinputhold}>
                     <TextInput style={styles.emailinput}/>
                     </View>
-                </View>
+                </View> */}
                 {/* <View>
                     <RadioGroup  radioButtons={radioButtons} 
             onPress={onPressRadioButton}  />
                 </View> */}
                 <TouchableOpacity style={{ backgroundColor: '#1E6738', width: "90%", marginTop: 30, padding: 8, borderRadius: 5 }} onPress={pressHandler}>
-                <Text style={{ color: '#fff', textAlign: 'center', fontSize: "20px"}}>Sign in</Text>
+                <Text onPress={handleSubmit} style={{ color: '#fff', textAlign: 'center', fontSize: "20px"}}>Sign Up</Text>
                 </TouchableOpacity>
                 <View style={styles.notyet}>
                 <Text style={styles.notmember}>Not yet a ShiptoNaija member?</Text>
@@ -183,6 +239,10 @@ const styles= StyleSheet.create({
     emailtog: {
         color: "#305743",
         fontWeight: "600"
+    },
+    selectdropdown: {
+        width: "100% ",
+        backgroundColor: "#DCDCDC"
     }
 })
 
