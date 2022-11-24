@@ -1,6 +1,6 @@
 import Icon  from 'react-native-vector-icons/FontAwesome';
 import React, { useState } from "react";
-import { Image, ImageBackground, StyleSheet, Text, TextInput, View, ScrollView } from "react-native";
+import { Image, ImageBackground, StyleSheet, KeyboardAvoidingView,Platform,  Text, TextInput, View, ScrollView } from "react-native";
 import loginimg from "../assets/loginimg.png";
 import loginlogo from "../assets/loginlogo.png";
 import google from "../assets/google.png";
@@ -9,20 +9,28 @@ import linkedinship from "../assets/linkedinship.png";
 import { SelectList } from 'react-native-dropdown-select-list'
 
 import { TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Registerauth } from '../components/auth/auth';
+import { ActivityIndicator } from 'react-native';
 
 
 const Signup = ({navigation}) => {
 
     const [secure, setSecure] = useState(true);
+    const [secure2, setSecure2] = useState(true);
 
     const userType = ["Personal", "Business"]
+    const [total, setTotal]= useState()
 
     const changeIcon= () => {
         setSecure(!secure)
     }
-    const handleSubmit=()=>{
-        console.warn(selected, source, signup)
+    const changeIcon2= () => {
+        setSecure2(!secure2)
     }
+    const dispatch = useDispatch()
+    
+    
     
     const pressHandler = () =>{
         navigation.push("Login")
@@ -30,14 +38,50 @@ const Signup = ({navigation}) => {
     const [selected, setSelected] = useState("");
     const [source, setSource] = useState("");
     const [signup, setSignup] = useState("");
+    const [firstname, setFirst] = useState("");
+    const [lastname, setLast] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirm] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhone] = useState("");
+    const [loading, setLoading]= useState(false)
+
+    // const signupdetails= {
+    //     phone_number: firstname,
+    //     // lastname: lastname,
+    //     password: password,
+    //     password_confirmation: confirmPassword,
+    //     email: email,
+    //     // phoneNumber: phoneNumber,
+    //     // userType:selected,
+    //     // sourceOfAwareness: source,
+    //     // signupMethod:signup
+    // }
+        
+    const handleSubmit= async ()=>{
+        const signupdetails= {
+            firstname: firstname,
+            lastname: lastname,
+            password: password,
+            password_confirmation: confirmPassword,
+            email: email,
+            // phoneNumber: phoneNumber,
+            // userType:selected,
+            // sourceOfAwareness: source,
+            // signupMethod:signup
+        }
+        setLoading(true)
+        await dispatch(Registerauth(signupdetails))
+        setLoading(false)
+    }
 
     const data = [
         {key:'1', value:'Select op', disabled:true},
-        {key:'2', value:'Personal'},
+        {key:'2', value:'personal'},
         {key:'3', value:'Business'},
     ]
     const data2 = [
-        {key:'1', value:'default', disabled:true},
+        {key:'1', value:'default'},
         {key:'2', value:'Personal'},
         {key:'3', value:'Business'},
     ]
@@ -61,19 +105,25 @@ const Signup = ({navigation}) => {
                 <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>First name</Text>
                     <View style={styles.emailinputhold}>
-                    <TextInput style={styles.emailinput}/>
+                    <TextInput onChangeText={setFirst} style={styles.emailinput}/>
                     </View>
                 </View>
                 <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>Last name</Text>
                     <View style={styles.emailinputhold}>
-                    <TextInput style={styles.emailinput}/>
+                    <TextInput onChangeText={setLast} style={styles.emailinput}/>
                     </View>
                 </View>
+                <KeyboardAvoidingView behavior={Platform.OS === "ios"? "padding" :""}  style={styles.inputemailtog}>
+                    <Text style={styles.emailtog}>Email</Text>
+                    <KeyboardAvoidingView behavior={Platform.OS === "ios"? "padding" :""}  style={styles.emailinputhold}>
+                    <TextInput onChangeText={setEmail} style={styles.emailinput}/>
+                    </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
                 <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>Password</Text>
                     <View style={styles.emailinputhold}>
-                    <TextInput secureTextEntry={secure} style={styles.emailinput}/>
+                    <TextInput secureTextEntry={secure} onChangeText={setPassword} style={styles.emailinput}/>
                     <Icon style={{ paddingRight: 15, color: "black", height:30, width:25, paddingTop: 10 }}
 name={secure ? "eye" : 'eye-slash'}
 size={20} color='gray' onPress={changeIcon}/>
@@ -82,25 +132,20 @@ size={20} color='gray' onPress={changeIcon}/>
                 <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>Confirm Password</Text>
                     <View style={styles.emailinputhold}>
-                    <TextInput secureTextEntry={secure} style={styles.emailinput}/>
+                    <TextInput secureTextEntry={secure2} onChangeText={setConfirm} style={styles.emailinput}/>
                     <Icon style={{ paddingRight: 15, color: "black", height:30, width:25, paddingTop: 10 }}
-name={secure ? "eye" : 'eye-slash'}
-size={20} color='gray' onPress={changeIcon}/>
+name={secure2 ? "eye" : 'eye-slash'}
+size={20} color='gray' onPress={changeIcon2}/>
                     </View>
                 </View>
-                <View style={styles.inputemailtog}>
-                    <Text style={styles.emailtog}>Email</Text>
-                    <View style={styles.emailinputhold}>
-                    <TextInput style={styles.emailinput}/>
-                    </View>
-                </View>
-                <View style={styles.inputemailtog}>
+                
+                {/* <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>Phone number</Text>
                     <View style={styles.emailinputhold}>
-                    <TextInput style={styles.emailinput}/>
+                    <TextInput onChangeText={setPhone} style={styles.emailinput}/>
                     </View>
-                </View>
-                <View style={styles.inputemailtog}>
+                </View> */}
+                {/* <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>User Type</Text>
                     <SelectList 
                     setSelected={(value) => setSelected(value)} 
@@ -129,7 +174,7 @@ size={20} color='gray' onPress={changeIcon}/>
                     boxStyles={{backgroundColor: "#DCDCDC", border: "none"}}
                     placeholder="Select Type"
                         />
-                </View>
+                </View> */}
                 
                 {/* <View style={styles.inputemailtog}>
                     <Text style={styles.emailtog}>City</Text>
@@ -153,8 +198,8 @@ size={20} color='gray' onPress={changeIcon}/>
                     <RadioGroup  radioButtons={radioButtons} 
             onPress={onPressRadioButton}  />
                 </View> */}
-                <TouchableOpacity style={{ backgroundColor: '#1E6738', width: "90%", marginTop: 30, padding: 8, borderRadius: 5 }} onPress={pressHandler}>
-                <Text onPress={handleSubmit} style={{ color: '#fff', textAlign: 'center', fontSize: "20px"}}>Sign Up</Text>
+                <TouchableOpacity style={{ backgroundColor: '#1E6738', width: "90%", marginTop: 30, padding: 8, borderRadius: 5 }} onPress={handleSubmit}>
+                {loading? <ActivityIndicator animating={true} color="white" />: <Text style={{ color: '#fff', textAlign: 'center', fontSize: "20px"}}>Sign Up</Text>}
                 </TouchableOpacity>
                 <View style={styles.notyet}>
                 <Text style={styles.notmember}>Not yet a ShiptoNaija member?</Text>
@@ -223,11 +268,13 @@ const styles= StyleSheet.create({
         top: -60
     },
     emailinputhold:{
+        flex:1,
         backgroundColor: "#DCDCDC",
         borderRadius: "5px",
         flexDirection: "row"
     },
     inputemailtog:{
+        flex:1,
         width: "90%",
         marginTop: 30
     },

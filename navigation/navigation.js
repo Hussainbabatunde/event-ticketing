@@ -11,6 +11,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; 
+import Homepage from "../screens/homepage";
+import TrendingEvent from "../screens/TrendingEvent";
 
 // const screens = {
 //     Home: Landing,
@@ -56,11 +58,19 @@ export function TabNavigation() {
    tabBarStyle: { display: "none" },headerShown: false, tabBarLabel: "", tabBarIconStyle: { display: "none" }
 }} component={Navigation} /> */}
         {/* <Tab.Screen name="Dashboard" component={Dashboard} /> */}
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Sidebar"
           component={Sidebar}
           options={{ title: 'Sidebar', tabBarActiveTintColor: 'rgba(72, 130, 101, 0.5)',  headerShown: false, tabBarIcon: ({focused}) => {
             return <Ionicons name="ios-home" size={30} color={focused ? "#488265" : "rgba(72, 130, 101, 0.5)"} />
+            },
+         }}
+        /> */}
+        <Tab.Screen
+          name="Eventhome"
+          component={Homepage}
+          options={{ title: 'Eventhome', tabBarActiveTintColor: 'rgba(72, 130, 101, 0.5)',  headerShown: false, tabBarIcon: ({focused}) => {
+            return <Ionicons name="ios-home" size={30} color={focused ? "rgb(116,131,237)" : "rgb(255,255,255)"} />
             },
          }}
         />
@@ -93,6 +103,11 @@ function Navigation() {
           name="Signup"
           component={Signup}
           options={{ title: 'Signup',  headerShown: false }}
+        />
+        <Stack.Screen
+          name="TrendingEvent"
+          component={TrendingEvent}
+          options={{ title: 'Trending Event',  headerShown: false }}
         />
         
         {/* <Stack.Screen

@@ -1,6 +1,6 @@
 import Icon  from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from "react";
-import { Image, ImageBackground, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, ImageBackground, StyleSheet, KeyboardAvoidingView, Platform, Text, TextInput, View } from "react-native";
 import loginimg from "../assets/loginimg.png";
 import loginlogo from "../assets/loginlogo.png";
 import google from "../assets/google.png";
@@ -22,6 +22,7 @@ const Login = ({navigation}) => {
 
     const[email, setEmail] =useState('')
     const[password, setPassword] =useState('')
+    const[devicename, setDevicename] =useState('')
     const [secure, setSecure] = useState(true);
     const [loading, setLoading] = useState(false)
 
@@ -57,7 +58,8 @@ const Login = ({navigation}) => {
     const onSubmithandler= async() =>{
         const name = {
             email: email,
-            password: password
+            password: password,
+            device_name: devicename
         }
         console.warn(name)
         setLoading(true)
@@ -67,12 +69,12 @@ const Login = ({navigation}) => {
 
         useEffect(()=>{
             if (success== true){
-                navigation.navigate("Dashboard")
+                navigation.navigate("Dashboard", {screen : "Eventhome"})
             }
             
         }, [navigation, success])
     return(
-        <View style={styles.body}>
+        <KeyboardAvoidingView  behavior={Platform.OS === "ios"? "padding" :""} style={styles.body}>
             <ImageBackground source={loginimg} resizeMode="cover" style={styles.child}>
                 <View style={styles.coverchild}></View>
                 </ImageBackground>
@@ -83,6 +85,12 @@ const Login = ({navigation}) => {
                     <Text style={styles.emailtog}>Email</Text>
                     <View style={styles.emailinputhold}>
                     <TextInput style={styles.emailinput} value={email} onChangeText={setEmail} placeholder="Input your email" />
+                    </View>
+                </View>
+                <View style={styles.inputemailtog}>
+                    <Text style={styles.emailtog}>Device name</Text>
+                    <View style={styles.emailinputhold}>
+                    <TextInput style={styles.emailinput} value={devicename} onChangeText={setDevicename} placeholder="" />
                     </View>
                 </View>
                 <View style={styles.inputemailtog}>
@@ -112,7 +120,7 @@ size={20} color='gray' onPress={changeIcon}/>
                 <Text style={styles.signup} onPress={Signuppage}>Sign up</Text>
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
